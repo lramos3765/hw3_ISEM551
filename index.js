@@ -6,10 +6,7 @@
     var bodyParser = require('body-parser');    
     var methodOverride = require('method-override'); 
 	var mongojs = require('mongojs');
-
-  
-    mongoose.connect('mongodb://node:nodeuser@mongo.onmodulus.net:27017/uwO3mypu');     // connect to mongoDB database on modulus.io
-	// mongoose.connect('mongodb://localhost/simple');
+	mongoose.connect('mongodb://localhost/simple');
 	 
     app.use(express.static(__dirname + '/public'));                 
     app.use(morgan('dev'));                                         
