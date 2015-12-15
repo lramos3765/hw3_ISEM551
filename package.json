@@ -1,0 +1,19 @@
+{
+  "name": "hw3",
+  "version": "1.0.0",
+  "description": "isem 551 hw3 fall 2015",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alitea Laya Ramos",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "method-override": "^2.3.5",
+    "mongojs": "^2.2.0",
+    "mongoose": "^4.3.1",
+    "morgan": "^1.6.1"
+  }
+}

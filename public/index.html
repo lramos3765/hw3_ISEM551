@@ -1,0 +1,114 @@
+<!doctype html>
+
+<html ng-app="taskList">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Node/Angular Todo App</title>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+    <style>
+        html                    { overflow-y:scroll; }
+        body                    { padding-top:50px; }
+        #todo-list              { margin-bottom:30px; }
+    </style>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+
+</head>
+
+<body ng-controller="mainController">
+    <div class="container">
+
+        <div class="jumbotron text-center">
+            <h1>Todo List <span class="label label-info">{{ todos.length }}</span></h1>
+        </div>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Task</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input class="form-control" ng-model="todo.text"></input></td>
+					<td><button class="btn btn-primary" ng-click="createTodo()">Add</button> &nbsp;&nbsp;&nbsp;<button class="btn btn-primary" ng-click="updateTodo()">Update</button></td>
+				</tr>
+				<tr ng-repeat="todo in todos">
+					<td>{{ todo.text }}</td>
+					<td><button class="btn btn-warning" ng-click="deleteTodo(todo._id)">Delete</button> <button class="btn btn-primary" ng-click="editTodo(todo._id)">Edit</button></td>
+				</tr>
+			</tbody>
+				
+
+    </div>
+</body>
+<script>
+
+angular.module('taskList', []);
+
+function mainController($scope, $http) {
+    $scope.todo = {};
+
+    $http.get('/api/todos')
+        .success(function(data) {
+            $scope.todos = data;
+            console.log(data);
+        })
+        .error(function(data) {
+            console.log('Error: ' + data);
+        });
+
+    $scope.createTodo = function() {
+        $http.post('/api/todos', $scope.todo)
+            .success(function(data) {
+                $scope.todo = {}; 
+                $scope.todos = data;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+
+    $scope.deleteTodo = function(id) {
+        $http.delete('/api/todos/' + id)
+            .success(function(data) {
+				//$scope.todo =data;
+                $scope.todos = data;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+	
+	$scope.editTodo = function(id) {
+        $http.get('/api/todos/' + id)
+            .success(function(data) {
+				$scope.todo = data;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+	
+	
+	$scope.updateTodo = function() {
+        $http.put('/api/todos/' + $scope.todo._id, $scope.todo)
+            .success(function(data) {
+				refresh();
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+
+}
+</script>
+</html>
